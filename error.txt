@@ -1,0 +1,13 @@
+error[E0061]: this function takes 2 arguments but 1 argument was supplied
+  --> src/main.rs:25:3
+   |
+22 |     #[derive(Properties, Default)]
+   |              ---------- an argument of type `MyEnum` is missing
+...
+25 |         #[property(get, set)]
+   |         ^
+   |
+help: provide the argument
+   |
+22 |     #[derive(#(enum_value, /* MyEnum */), Default)]
+   |              ~~~~~~~~~~~~~~~~~~~~~~~~~~~
