@@ -15,7 +15,7 @@ mod imp {
 
 	use gtk::prelude::*;
 	use gtk::subclass::prelude::*;
-    use gtk::glib;
+    use gtk::glib::{self, ParamSpec};
     use glib::Properties;
 
     use super::MyEnum;
@@ -33,7 +33,21 @@ mod imp {
 		type Type = super::MyObject;
 	}
 
-	impl ObjectImpl for MyObject {}
+	impl ObjectImpl for MyObject {
+        fn properties() -> &'static [ParamSpec] {
+            use glib::once_cell::sync::Lazy;
+            static PROPERTIES: Lazy<[glib::ParamSpec; 1usize]> = Lazy::new(|| [
+                <<RefCell<
+                    MyEnum,
+                > as glib::Property>::Value as glib::HasParamSpec>::param_spec_builder()(
+                        "enum-value",
+                    )
+                    .readwrite()
+                    .build(),
+            ]);
+            PROPERTIES.as_ref()
+		}
+    }
 }
 glib::wrapper! {
 	pub struct MyObject(ObjectSubclass<imp::MyObject>);
